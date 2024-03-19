@@ -14951,6 +14951,7 @@ a dataset on competitive car racing</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Write your own code</span>
+
 <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data_raw/results.csv&quot;</span><span class="p">)</span>
 </pre></div>
 
@@ -15051,18 +15052,6 @@ dtype: object</pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Since in the codebook the "time" column is labeled as varchar(255), the data type is consistent with the type "object" we get from the function above, both representing a string variable.</p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><font size = "5"></p>
 <p>(c) Clean a column</p>
 <p><font size = "3"></p>
@@ -15091,8 +15080,6 @@ to missing values (NaNs) and covert to numeric</li>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Write your own code here</span>
-
-<span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data_raw/results.csv&quot;</span><span class="p">)</span>
 
 <span class="n">subset</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;milliseconds.str.isnumeric() == False&quot;</span><span class="p">)</span>
 <span class="n">list_unique</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">subset</span><span class="p">[</span><span class="s2">&quot;milliseconds&quot;</span><span class="p">])</span>
@@ -15177,7 +15164,7 @@ dtype: object</pre>
 <p>(d) Groupby + Aggregate</p>
 <p><font size = "3"></p>
 <ul>
-<li>Compute the mean and standard deviation of "position", <br>
+<li>Compute the mean and standard deviation of "laps", <br>
 grouping by "constructorId". Store the new dataset <br>
 as "df_aggCon_pos"</li>
 <li>Sort the aggregate dataset in decending <br>
@@ -15196,60 +15183,13 @@ order of mean laps using ".sort_values()"</li>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Write your own code</span>
-<span class="c1"># convert non-numeric data in position to numeric data</span>
-<span class="n">subset_pos</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;position.str.isnumeric() == False&quot;</span><span class="p">)</span>
-<span class="n">list_unique_pos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">subset_pos</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">list_unique_pos</span><span class="p">)</span>
-<span class="n">list_old_pos</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">N&quot;</span><span class="p">]</span>
-<span class="n">list_new_pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
-<span class="n">results</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">list_old_pos</span><span class="p">,</span> <span class="n">list_new_pos</span><span class="p">)</span>
-<span class="n">results</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">])</span>
 
-<span class="c1"># compute mean and sd</span>
-<span class="n">df_aggCon_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;constructorId&quot;</span><span class="p">)</span>
-                        <span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">mean_position</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;position&quot;</span><span class="p">,</span><span class="s2">&quot;mean&quot;</span><span class="p">),</span>
-                             <span class="n">sd_position</span> <span class="o">=</span>   <span class="p">(</span><span class="s2">&quot;position&quot;</span><span class="p">,</span><span class="s2">&quot;std&quot;</span><span class="p">)))</span>
+<span class="n">df_aggCon_laps</span> <span class="o">=</span> <span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;constructorId&quot;</span><span class="p">)</span>
+                        <span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">mean_laps</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;laps&quot;</span><span class="p">,</span><span class="s2">&quot;mean&quot;</span><span class="p">),</span>
+                             <span class="n">sd_position_laps</span> <span class="o">=</span>   <span class="p">(</span><span class="s2">&quot;laps&quot;</span><span class="p">,</span><span class="s2">&quot;std&quot;</span><span class="p">)))</span>
 
-<span class="n">df_aggCon_pos</span> <span class="o">=</span> <span class="n">df_aggCon_pos</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;mean_position&quot;</span><span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[&#39;\\N&#39;]
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_aggCon_pos</span>
+<span class="n">df_aggCon_laps</span> <span class="o">=</span> <span class="n">df_aggCon_laps</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;mean_laps&quot;</span><span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">df_aggCon_laps</span>
 </pre></div>
 
      </div>
@@ -15290,8 +15230,8 @@ order of mean laps using ".sort_values()"</li>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>mean_position</th>
-      <th>sd_position</th>
+      <th>mean_laps</th>
+      <th>sd_position_laps</th>
     </tr>
     <tr>
       <th>constructorId</th>
@@ -15301,29 +15241,29 @@ order of mean laps using ".sort_values()"</li>
   </thead>
   <tbody>
     <tr>
-      <th>160</th>
-      <td>24.000000</td>
-      <td>NaN</td>
+      <th>149</th>
+      <td>198.500000</td>
+      <td>2.121320</td>
     </tr>
     <tr>
-      <th>116</th>
-      <td>23.333333</td>
-      <td>7.767453</td>
+      <th>112</th>
+      <td>197.000000</td>
+      <td>4.242641</td>
     </tr>
     <tr>
-      <th>159</th>
-      <td>23.000000</td>
-      <td>NaN</td>
+      <th>109</th>
+      <td>184.285714</td>
+      <td>32.912583</td>
     </tr>
     <tr>
-      <th>158</th>
-      <td>22.000000</td>
-      <td>NaN</td>
+      <th>119</th>
+      <td>178.666667</td>
+      <td>36.950417</td>
     </tr>
     <tr>
-      <th>164</th>
-      <td>18.987342</td>
-      <td>2.519125</td>
+      <th>108</th>
+      <td>163.764706</td>
+      <td>63.148168</td>
     </tr>
     <tr>
       <th>...</th>
@@ -15331,29 +15271,29 @@ order of mean laps using ".sort_values()"</li>
       <td>...</td>
     </tr>
     <tr>
-      <th>184</th>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>186</th>
-      <td>NaN</td>
+      <th>93</th>
+      <td>0.000000</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>193</th>
-      <td>NaN</td>
+      <th>61</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>137</th>
+      <td>0.000000</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>197</th>
-      <td>NaN</td>
+      <th>91</th>
+      <td>0.000000</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>203</th>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>74</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
     </tr>
   </tbody>
 </table>
@@ -15398,8 +15338,17 @@ as "df_subAggCon_pos"</li>
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Write your own code</span>
 
+<span class="c1"># convert non-numeric data in position to numeric data</span>
+<span class="n">subset_pos</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;position.str.isnumeric() == False&quot;</span><span class="p">)</span>
+<span class="n">list_unique_pos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">subset_pos</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">list_unique_pos</span><span class="p">)</span>
+<span class="n">list_old_pos</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">N&quot;</span><span class="p">]</span>
+<span class="n">list_new_pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+<span class="n">results</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">list_old_pos</span><span class="p">,</span> <span class="n">list_new_pos</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">])</span>
+
 <span class="n">df_subAggCon_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;raceId &gt;= 150&quot;</span><span class="p">)</span>
-                           <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;constructorId&quot;</span><span class="p">])</span>
+                           <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;constructorId&quot;</span><span class="p">)</span>
                            <span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">mean_position</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;position&quot;</span><span class="p">,</span><span class="s2">&quot;mean&quot;</span><span class="p">),</span>
                                 <span class="n">sd_position</span> <span class="o">=</span>   <span class="p">(</span><span class="s2">&quot;position&quot;</span><span class="p">,</span><span class="s2">&quot;std&quot;</span><span class="p">)))</span>
 <span class="n">df_subAggCon_pos</span>
@@ -15416,6 +15365,18 @@ as "df_subAggCon_pos"</li>
 
 
 <div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>[&#39;\\N&#39;]
+</pre>
+</div>
+</div>
 
 <div class="jp-OutputArea-child">
 
@@ -15518,22 +15479,6 @@ as "df_subAggCon_pos"</li>
 
 </div>
 
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-     </div>
-</div>
-</div>
 </div>
 
 </div>
